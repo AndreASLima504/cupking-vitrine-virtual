@@ -1,6 +1,9 @@
 package com.project.pit.cupking.domain.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "cupcake")
 public class Cupcake {
 
@@ -31,6 +36,9 @@ public class Cupcake {
             scale = 2
     )
     private BigDecimal precoUnitario;
+
+    @Column(name = "nota_media")
+    private BigDecimal notaMedia;
 
     @ManyToMany
     @JoinTable(

@@ -1,0 +1,22 @@
+<header class="header">
+
+    <a th:href="@{/}" class="logo">
+        ♛ cupking
+    </a>
+
+    <div class="header-actions">
+
+        <a th:href="@{/perfil}" class="header-icon"
+           aria-label="Meu perfil">
+            <span th:text="${iniciaisUsuario ?: 'LC'}">LC</span>
+        </a>
+
+        <a th:href="@{/carrinho}" class="header-icon"
+           aria-label="Carrinho">
+            ♧
+            <span class="cart-counter"
+                  th:text="${carrinhoQuantidade ?: 0}">3</span>
+        </a>
+
+    </div>
+</header>

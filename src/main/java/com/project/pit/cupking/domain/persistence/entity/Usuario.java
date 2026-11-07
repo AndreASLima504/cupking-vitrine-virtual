@@ -16,7 +16,7 @@ public class Usuario {
     private String nome;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String usuario;
+    private String email;
 
     @Column(nullable = false)
     private String senha;
@@ -27,6 +27,8 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Encomenda> encomendas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
     public Usuario() {}
 
 }

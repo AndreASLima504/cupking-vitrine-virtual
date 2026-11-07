@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${cupcake.nome} + ' | Cupking'">Cupcake | Cupking</title>
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/cupcake-detalhes.css}">
+</head>
+
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="product-details">
+
+    <!-- Voltar -->
+    <a class="back-link" th:href="@{/}">
+        <span class="back-arrow">←</span>
+        <span>Voltar ao início</span>
+    </a>
+
+    <!-- Carrossel -->
+    <section class="carousel">
+
+        <button type="button"
+                class="carousel-arrow previous"
+                onclick="moveCarousel(-1)"
+                aria-label="Foto anterior">
+            &#10094;
+        </button>
+
+        <div class="carousel-track" id="carouselTrack">
+
+            <div class="carousel-slide"
+                 th:each="foto : ${cupcake.fotos}">
+                <img th:src="@{${foto}}"
+                     th:alt="${cupcake.nome}"
+                     loading="lazy">
+            </div>
+
+        </div>
+
+        <button type="button"
+                class="carousel-arrow next"
+                onclick="moveCarousel(1)"
+                aria-label="Próxima foto">
+            &#10095;
+        </button>
+
+    </section>
+
+    <!-- Informação -->
+    <div class="product-notice">
+        Feito à mão, em pequenos lotes. Cada cupcake tem
+        aproximadamente 90 g.
+    </div>
+
+    <!-- Informações do produto -->
+    <section class="product-info">
+
+        <h1 th:text="${cupcake.nome}">Nome do cupcake</h1>
+
+        <div class="product-rating">
+            <span class="star-icon">★</span>
+
+            <span class="rating-value"
+                  th:text="${cupcake.notaMedia != null
+                    ? #numbers.formatDecimal(cupcake.notaMedia, 1, 1)
+                    : 'Sem avaliações'}">
+                4.9
+            </span>
+        </div>
+
+        <p class="product-description"
+           th:text="${cupcake.descricao}">
+            Descrição do cupcake.
+        </p>
+
+        <!-- Ingredientes -->
+        <section class="ingredients-section">
+
+            <h2>O que vai nessa receita</h2>
+
+            <p th:text="${#strings.listJoin(cupcake.ingredientes, ', ')}">
+                Farinha de trigo, açúcar, ovos e manteiga.
+            </p>
+
+        </section>
+
+    </section>
+
+    <!-- Compra -->
+    <section class="purchase-section">
+
+        <div class="purchase-row">
+
+            <div class="unit-price">
+                <span>por unidade</span>
+
+                <strong th:text="${'R$ ' + #numbers.formatDecimal(
+                    cupcake.precoUnitario, 1, 'POINT', 2, 'COMMA'
+                )}">
+                    R$ 12,00
+                </strong>
+            </div>
+
+            <div class="quantity-selector">
+
+                <button type="button"
+                        onclick="changeQuantity(-1)"
+                        aria-label="Diminuir quantidade">
+                    −
+                </button>
+
+                <span id="quantityDisplay">1</span>
+
+                <button type="button"
+                        onclick="changeQuantity(1)"
+                        aria-label="Aumentar quantidade">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+        <form th:action="@{/carrinho/itens}" method="post">
+
+            <input type="hidden"
+                   name="cupcakeId"
+                   th:value="${cupcake.id}">
+
+            <input type="hidden"
+                   name="quantidade"
+                   id="quantityInput"
+                   value="1">
+
+            <button type="submit"
+                    class="add-to-cart"
+                    id="addToCart"
+                    th:attr="data-price=${cupcake.precoUnitario}">
+                Adicionar 1 • R$ 0,00
+            </button>
+
+        </form>
+
+        <span class="order-notice">
+            Encomendas com 24h de antecedência. Escolha entrega
+            ou retirada na finalização.
+        </span>
+
+    </section>
+</main>
+
+<nav th:replace="~{fragments/bottom-nav :: bottomNav}"></nav>
+
+
+<script th:inline="javascript">
+    const unitPrice = Number(
+        /*[[${cupcake.precoUnitario}]]*/ 0
+    );
+
+    let quantity = 1;
+
+    const quantityDisplay = document.getElementById("quantityDisplay");
+    const quantityInput = document.getElementById("quantityInput");
+    const addToCartButton = document.getElementById("addToCart");
+
+    const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+
+    function updatePurchase() {
+        const total = unitPrice * quantity;
+
+        quantityDisplay.textContent = quantity;
+        quantityInput.value = quantity;
+
+        addToCartButton.textContent =
+            `Adicionar ${quantity} • ${currencyFormatter.format(total)}`;
+    }
+
+    function changeQuantity(amount) {
+        quantity = Math.max(1, quantity + amount);
+        updatePurchase();
+    }
+
+    function moveCarousel(direction) {
+        const track = document.getElementById("carouselTrack");
+        const slide = track.querySelector(".carousel-slide");
+
+        if (!slide) return;
+
+        track.scrollBy({
+            left: direction * slide.offsetWidth,
+            behavior: "smooth"
+        });
+    }
+
+    updatePurchase();
+</script>
+
+</body>
+</html>

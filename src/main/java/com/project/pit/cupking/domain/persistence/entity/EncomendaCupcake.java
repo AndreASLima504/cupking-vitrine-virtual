@@ -12,7 +12,6 @@ import java.math.BigDecimal;
                         columnNames = {
                                 "id_encomenda",
                                 "id_cupcake",
-                                "tamanho"
                         }
                 )
         }
@@ -31,19 +30,8 @@ public class EncomendaCupcake {
     @JoinColumn(name = "id_cupcake", nullable = false)
     private Cupcake cupcake;
 
-    @Column(nullable = false, length = 30)
-    private String tamanho;
-
     @Column(nullable = false)
     private Integer quantidade;
-
-    @Column(
-            name = "preco_unitario",
-            nullable = false,
-            precision = 10,
-            scale = 2
-    )
-    private BigDecimal precoUnitario;
 
     public EncomendaCupcake() {}
 

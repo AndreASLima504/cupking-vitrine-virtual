@@ -1,0 +1,412 @@
+body {
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 85px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+}
+
+
+/* CONTEÚDO */
+
+.main {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 25px 20px 20px;
+}
+
+.eyebrow {
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.intro h1 {
+    font-size: clamp(24px, 6vw, 30px);
+    letter-spacing: -1px;
+    margin-bottom: 7px;
+}
+
+.intro p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* BUSCA */
+
+.search-form {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0 13px;
+    margin-bottom: 18px;
+}
+
+.search-icon {
+    color: var(--blue);
+    font-size: 21px;
+    margin-right: 10px;
+}
+
+.search-form input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    background: transparent;
+}
+
+.search-form input::placeholder {
+    color: #999;
+}
+
+/* ENDEREÇO */
+
+.delivery {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11px;
+    margin-bottom: 20px;
+}
+
+.delivery-info {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.delivery-icon {
+    color: var(--blue);
+    font-size: 15px;
+}
+
+.delivery a {
+    color: var(--blue);
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* DESTAQUE */
+
+.featured {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--orange);
+    border-radius: 12px;
+    padding: 14px;
+    min-height: 170px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.featured-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.featured-label {
+    color: #152c70;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+}
+
+.featured h2 {
+    color: #123b83;
+    font-size: clamp(20px, 5.5vw, 27px);
+    line-height: 1.08;
+    letter-spacing: -0.7px;
+    margin-bottom: 10px;
+}
+
+.featured-price {
+    color: #123b83;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.featured img {
+    width: 42%;
+    max-width: 145px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* LISTA DE CUPCAKES */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-heading h2 {
+    font-size: 21px;
+    letter-spacing: -0.5px;
+}
+
+.section-heading span {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+/* CATEGORIAS */
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 18px;
+}
+
+.category {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    color: #555;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.category.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+}
+
+/* GRID */
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.product-card {
+    min-width: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-link {
+    display: block;
+    min-width: 0;
+}
+
+.product-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: #f0e5d8;
+}
+
+.product-info {
+    padding: 9px 10px 0;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #777;
+    font-size: 9px;
+    margin-bottom: 8px;
+}
+
+.rating-star {
+    color: var(--orange);
+    font-size: 13px;
+}
+
+.product-name {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    min-height: 34px;
+    overflow-wrap: anywhere;
+}
+
+.product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 8px 9px 9px;
+    margin-top: auto;
+}
+
+.product-price {
+    font-size: 15px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* BOTÃO ADICIONAR */
+
+.add-form {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.add-button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: var(--orange);
+    color: white;
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.add-button:active {
+    transform: scale(0.92);
+    background: #e94a0d;
+}
+
+/* AVISO */
+
+.notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f7efe2;
+    border-radius: 8px;
+    padding: 13px;
+    margin-top: 20px;
+    color: #8b8174;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.notice-icon {
+    color: var(--orange);
+    font-size: 19px;
+}
+
+/* OVERLAY / NAVEGAÇÃO INFERIOR */
+
+.bottom-nav {
+    position: fixed;
+    z-index: 1000;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 650px;
+    height: 72px;
+    padding: 8px 10px max(8px, env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #858585;
+    font-size: 10px;
+    text-decoration: none;
+}
+
+.nav-icon {
+    font-size: 19px;
+    line-height: 1;
+}
+
+.nav-item.active {
+    color: var(--blue);
+    font-weight: bold;
+}
+
+/* TELAS MAIORES */
+
+@media (min-width: 600px) {
+    .main {
+        padding: 32px 25px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .featured {
+        min-height: 190px;
+    }
+}
+
+@media (max-width: 350px) {
+    .main {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .header {
+        padding: 0 13px;
+    }
+
+    .product-name {
+        font-size: 12px;
+    }
+
+    .product-price {
+        font-size: 13px;
+    }
+
+    .product-footer {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    .add-button {
+        width: 30px;
+        height: 30px;
+    }
+}

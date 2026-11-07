@@ -1,8 +1,12 @@
 package com.project.pit.cupking.domain.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "cupcake_image")
 public class CupcakeFoto {
     @Id

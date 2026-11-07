@@ -1,10 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Cupking | Cupcakes artesanais</title>
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
 </head>
+
 <body>
-    <span>Olá!</span>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="main">
+
+    <!-- APRESENTAÇÃO -->
+    <section class="intro">
+
+        <div class="eyebrow">
+            Feitos à mão. Com atitude.
+        </div>
+
+        <h1>Qual vai ser o seu?</h1>
+
+        <p>
+            Um cupcake para cada vontade. E para repetir também.
+        </p>
+
+    </section>
+
+
+    <!-- BUSCA -->
+    <form class="search-form"
+          th:action="@{/}"
+          method="get">
+
+        <span class="search-icon">⌕</span>
+
+        <input type="search"
+               name="busca"
+               placeholder="Qual cupcake combina com hoje?"
+               th:value="${busca}">
+
+    </form>
+
+    <!-- PRODUTOS -->
+    <section class="products-section">
+
+        <div class="section-heading">
+
+            <h2>Nossos cupcakes</h2>
+
+        </div>
+
+
+        <!-- FILTROS -->
+        <div class="categories">
+
+            <a th:href="@{/}"
+               class="category"
+               th:classappend="${categoriaSelecionada == null ? ' active' : ''}">
+                Todos
+            </a>
+
+            <a th:each="categoria : ${categorias}"
+               th:href="@{/(categoria=${categoria.nome})}"
+               class="category"
+               th:classappend="${categoriaSelecionada == categoria.nome ? ' active' : ''}"
+               th:text="${categoria.nome}">
+                Chocolate
+            </a>
+
+        </div>
+
+
+        <!-- GRID DE CUPCAKES -->
+        <div class="product-grid">
+
+            <article class="product-card"
+                     th:each="cupcake : ${cupcakes}">
+
+                <!-- LINK PARA DETALHES -->
+                <a class="product-link"
+                   th:href="@{/cupcakes/{id}(id=${cupcake.id})}">
+
+                    <img class="product-image"
+                         th:src="@{${cupcake.imagemPrincipal}}"
+                         th:alt="${cupcake.nome}"
+                         loading="lazy">
+
+                    <div class="product-info">
+
+                        <div class="rating">
+
+                            <span class="rating-star">★</span>
+
+                            <span th:text="${cupcake.notaMedia != null
+                                ? #numbers.formatDecimal(cupcake.notaMedia, 1, 'POINT', 1, 'COMMA')
+                                : 'Novo'}">
+                                4,9
+                            </span>
+
+                            <span th:if="${cupcake.totalAvaliacoes != null}"
+                                  th:text="'(' + ${cupcake.totalAvaliacoes} + ')'">
+                                (128)
+                            </span>
+
+                        </div>
+
+                        <h3 class="product-name"
+                            th:text="${cupcake.nome}">
+                            Chocolate intenso
+                        </h3>
+
+                    </div>
+
+                </a>
+
+
+                <!-- PREÇO E ADICIONAR -->
+                <div class="product-footer">
+
+                    <span class="product-price"
+                          th:text="${'R$ ' + #numbers.formatDecimal(cupcake.precoUnitario, 1, 'POINT', 2, 'COMMA')}">
+                        R$ 14,00
+                    </span>
+
+                    <form class="add-form"
+                          th:action="@{/carrinho/itens}"
+                          method="post">
+
+                        <input type="hidden"
+                               name="cupcakeId"
+                               th:value="${cupcake.id}">
+
+                        <input type="hidden"
+                               name="quantidade"
+                               value="1">
+
+                        <button type="submit"
+                                class="add-button"
+                                aria-label="Adicionar ao carrinho">
+                            +
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- AVISO -->
+    <aside class="notice">
+
+        <span class="notice-icon">♧</span>
+
+        <p>
+            Pequenos lotes, grandes sabores.
+            Encomende com pelo menos 24 horas de antecedência.
+        </p>
+
+    </aside>
+
+</main>
+
+
+<nav th:replace="~{fragments/bottom-nav :: bottomNav}"></nav>
+
 </body>
 </html>
