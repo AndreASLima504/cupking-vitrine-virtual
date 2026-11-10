@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meu carrinho | Cupking</title>
+
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/carrinho.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="cart-page">
+
+    <!-- Etapas do pedido -->
+    <nav class="checkout-steps" aria-label="Etapas da encomenda">
+        <div class="step active">
+            <span class="step-number">1</span>
+            <span>Carrinho</span>
+        </div>
+
+        <span class="step-line"></span>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <span>Entrega</span>
+        </div>
+
+        <span class="step-line"></span>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <span>Finalização</span>
+        </div>
+    </nav>
+
+    <!-- Cabeçalho -->
+    <section class="cart-heading">
+        <h1>Só coisa boa aqui.</h1>
+
+        <p>
+            <span th:text="${encomenda.quantidadeTotal}">0</span>
+            cupcakes no carrinho. Já dá para sentir o cheirinho.
+        </p>
+    </section>
+
+    <!-- Carrinho vazio -->
+    <section class="empty-cart"
+             th:if="${#lists.isEmpty(encomenda.itens)}">
+
+        <div class="empty-cart-icon">🧁</div>
+
+        <h2>Seu carrinho está vazio</h2>
+
+        <p>Que tal escolher alguns cupcakes?</p>
+
+        <a th:href="@{/}" class="continue-shopping">
+            Explorar cupcakes
+        </a>
+    </section>
+
+    <!-- Carrinho com itens -->
+    <div class="cart-content"
+         th:unless="${#lists.isEmpty(encomenda.itens)}">
+
+        <section class="cart-items">
+
+            <!-- Aviso -->
+            <div class="cart-info">
+                <span class="info-icon">ⓘ</span>
+
+                <p>
+                    <strong>Seu caminho fica salvo por aqui.</strong>
+                    Pode voltar depois. Seus favoritos vão continuar
+                    esperando por você.
+                </p>
+            </div>
+
+            <!-- Produtos -->
+            <article class="cart-item"
+                     th:each="item : ${encomenda.itens}">
+
+                <div class="item-image">
+                    <img th:if="${!#lists.isEmpty(item.cupcake.fotos)}"
+                         th:src="@{${item.cupcake.fotos[0].caminho}}"
+                         th:alt="${item.cupcake.nome}">
+
+                    <img th:if="${#lists.isEmpty(item.cupcake.fotos)}"
+                         th:src="@{/images/cupcake-placeholder.png}"
+                         alt="Cupcake">
+                </div>
+
+                <div class="item-info">
+
+                    <div class="item-header">
+                        <div>
+                            <h2 th:text="${item.cupcake.nome}">
+                                Nome do cupcake
+                            </h2>
+
+                            <p class="item-price">
+                                R$
+                                <span th:text="${#numbers.formatDecimal(
+                                    item.cupcake.precoUnitario,
+                                    1, 'POINT', 2, 'COMMA'
+                                )}">0,00</span>
+                                / un.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="item-footer">
+
+                        <div class="item-actions">
+
+                            <!-- Quantidade -->
+                            <form th:action="@{/carrinho/itens/atualizar}"
+                                  method="post"
+                                  class="quantity-form">
+
+                                <input type="hidden"
+                                       name="cupcakeId"
+                                       th:value="${item.cupcake.id}">
+
+                                <button type="button"
+                                        class="quantity-button"
+                                        aria-label="Diminuir quantidade"
+                                        onclick="alterarQuantidade(this, -1)">
+                                    −
+                                </button>
+
+                                <input type="number"
+                                       name="quantidade"
+                                       class="quantity-input"
+                                       min="1"
+                                       max="99"
+                                       th:value="${item.quantidade}"
+                                       aria-label="Quantidade">
+
+                                <button type="button"
+                                        class="quantity-button"
+                                        aria-label="Aumentar quantidade"
+                                        onclick="alterarQuantidade(this, 1)">
+                                    +
+                                </button>
+                            </form>
+
+                            <!-- Remover -->
+                            <form th:action="@{/carrinho/itens/remover}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="cupcakeId"
+                                       th:value="${item.cupcake.id}">
+
+                                <button type="submit" class="remove-item">
+                                    <img th:src="@{/images/icons/trash.svg}"
+                                         alt=""
+                                         class="remove-icon">
+                                    Remover
+                                </button>
+                            </form>
+
+                        </div>
+
+                        <strong class="item-subtotal">
+                            R$
+                            <span th:text="${#numbers.formatDecimal(
+                                item.subtotal,
+                                1, 'POINT', 2, 'COMMA'
+                            )}">0,00</span>
+                        </strong>
+
+                    </div>
+                </div>
+            </article>
+
+            <a th:href="@{/}" class="add-more">
+                ← Continuar comprando
+            </a>
+
+        </section>
+
+        <!-- Resumo -->
+        <aside class="cart-summary">
+
+            <h2>Resumo da encomenda</h2>
+
+            <div class="summary-row">
+                <span>
+                    Subtotal •
+                    <span th:text="${encomenda.quantidadeTotal}">0</span>
+                    cupcakes
+                </span>
+
+                <strong>
+                    R$
+                    <span th:text="${#numbers.formatDecimal(
+                        encomenda.precoTotal,
+                        1, 'POINT', 2, 'COMMA'
+                    )}">0,00</span>
+                </strong>
+            </div>
+
+            <div class="summary-row delivery-row">
+                <span>Entrega</span>
+                <span>A definir</span>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-total">
+                <span>Total parcial</span>
+
+                <strong>
+                    R$
+                    <span th:text="${#numbers.formatDecimal(
+                        encomenda.precoTotal,
+                        1, 'POINT', 2, 'COMMA'
+                    )}">0,00</span>
+                </strong>
+            </div>
+
+            <a th:href="@{/carrinho/retirada}" class="checkout-button">
+                Continuar
+                <span>→</span>
+            </a>
+
+            <p class="summary-notice">
+                A forma de recebimento e o valor da entrega serão definidos
+                na próxima etapa.
+            </p>
+
+            <p class="artisan-notice">
+                Produção artesanal. Feitos para o seu dia.
+            </p>
+
+        </aside>
+
+    </div>
+
+</main>
+
+<nav th:replace="~{fragments/bottom-nav :: bottomNav}"></nav>
+
+<script>
+    function alterarQuantidade(botao, variacao) {
+        const form = botao.closest(".quantity-form");
+        const input = form.querySelector(".quantity-input");
+
+        const quantidadeAtual = Number(input.value) || 1;
+        const novaQuantidade = Math.min(
+            99,
+            Math.max(1, quantidadeAtual + variacao)
+        );
+
+        if (novaQuantidade !== quantidadeAtual) {
+            input.value = novaQuantidade;
+            form.requestSubmit();
+        }
+    }
+
+    document.querySelectorAll(".quantity-input").forEach(input => {
+        input.addEventListener("change", () => {
+            const quantidade = Number(input.value);
+
+            if (!Number.isInteger(quantidade) || quantidade < 1) {
+                input.value = 1;
+            } else if (quantidade > 99) {
+                input.value = 99;
+            }
+
+            input.form.requestSubmit();
+        });
+    });
+</script>
+
+</body>
+</html>

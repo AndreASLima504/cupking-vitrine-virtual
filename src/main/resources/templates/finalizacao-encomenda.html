@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Finalização de encomenda | Cupking</title>
+
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/finalizacao-encomenda.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="checkout-page">
+
+    <!-- Etapas -->
+    <nav class="checkout-steps" aria-label="Etapas da encomenda">
+
+        <div class="step completed">
+            <span class="step-number">✓</span>
+            <span>Carrinho</span>
+        </div>
+
+        <span class="step-line completed-line"></span>
+
+        <div class="step active">
+            <span class="step-number">2</span>
+            <span>Retirada</span>
+        </div>
+
+        <span class="step-line"></span>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <span>Finalização</span>
+        </div>
+
+    </nav>
+
+    <!-- Cabeçalho -->
+    <section class="checkout-heading">
+
+        <a th:href="@{/carrinho}" class="back-link">
+            <span>←</span>
+            Voltar ao carrinho
+        </a>
+
+        <h1>Falta só combinar.</h1>
+
+        <p>
+            Confira como será o recebimento da sua encomenda
+            antes de confirmar.
+        </p>
+
+    </section>
+
+    <!-- Forma de recebimento -->
+    <section class="checkout-section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Como você vai receber?</h2>
+                <p>Por enquanto, trabalhamos apenas com retirada.</p>
+            </div>
+        </div>
+
+        <div class="pickup-option selected">
+
+            <div class="pickup-icon">
+                <img th:src="@{/images/icons/home.svg}"
+                     alt="">
+            </div>
+
+            <div class="pickup-info">
+                <strong>Retirada no local</strong>
+                <p>
+                    Você poderá retirar sua encomenda
+                    pessoalmente.
+                </p>
+            </div>
+
+            <span class="selected-indicator">✓</span>
+
+        </div>
+
+        <div class="pickup-notice">
+            <span class="notice-icon">ⓘ</span>
+
+            <p>
+                As informações para retirada serão combinadas
+                após a confirmação da encomenda.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- Data de retirada -->
+    <!-- Data de retirada -->
+    <section class="checkout-section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Quando você quer retirar?</h2>
+                <p>Escolha o dia e o horário em que pretende buscar sua encomenda.</p>
+            </div>
+        </div>
+
+        <div class="date-selection">
+
+            <div class="date-field">
+                <label for="dataRetirada">Data de retirada</label>
+
+                <input
+                        type="date"
+                        id="dataRetirada"
+                        name="dataRetirada"
+                        form="checkout-form"
+                        th:attr="min=${dataMinima}"
+                        required
+                >
+            </div>
+
+            <div class="date-field">
+                <label for="horaRetirada">Horário de retirada</label>
+
+                <select
+                        id="horaRetirada"
+                        name="horaRetirada"
+                        form="checkout-form"
+                        required
+                        disabled
+                >
+                    <option value="">Selecione primeiro uma data</option>
+                </select>
+            </div>
+
+            <p class="date-notice">
+                Segunda a sexta: 08h às 18h<br>
+                Sábado e domingo: 08h às 13h
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- Pagamento -->
+    <section class="checkout-section payment-section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Forma de pagamento</h2>
+                <p>Você escolhe como pagar na hora da retirada.</p>
+            </div>
+        </div>
+
+        <div class="payment-info">
+
+            <div class="payment-icon">
+                <img th:src="@{/images/icons/dollar-sign.svg}"
+                     alt="">
+            </div>
+
+            <div>
+                <strong>Pagamento na retirada</strong>
+
+                <p>Cartão, Pix ou dinheiro.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Resumo -->
+    <aside class="checkout-summary">
+
+        <h2>Resumo da encomenda</h2>
+
+        <div class="summary-items">
+
+            <div class="summary-item"
+                 th:each="item : ${encomenda.itens}">
+
+                <div class="summary-item-info">
+                    <strong th:text="${item.cupcake.nome}">
+                        Nome do cupcake
+                    </strong>
+
+                    <span th:text="${item.quantidade + ' unidade(s)'}">
+                    1 unidade
+                </span>
+                </div>
+
+                <strong class="summary-item-price">
+                    R$
+                    <span th:text="${#numbers.formatDecimal(
+                    item.subtotal,
+                    1, 'POINT', 2, 'COMMA'
+                )}">0,00</span>
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row">
+            <span>Quantidade total</span>
+            <strong th:text="${encomenda.quantidadeTotal}">0</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Retirada</span>
+            <strong>Grátis</strong>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total">
+            <span>Total</span>
+
+            <strong>
+                R$
+                <span th:text="${#numbers.formatDecimal(
+                encomenda.precoTotal,
+                1, 'POINT', 2, 'COMMA'
+            )}">0,00</span>
+            </strong>
+        </div>
+
+        <form id="checkout-form"
+              th:action="@{/carrinho/finalizar}"
+              method="post">
+            <button type="submit" class="confirm-button">
+                Confirmar encomenda <span>→</span>
+            </button>
+        </form>
+
+        <p class="summary-notice">
+            O pagamento será realizado presencialmente,
+            no momento da retirada.
+        </p>
+
+    </aside>
+
+
+</main>
+
+<nav th:replace="~{fragments/bottom-nav :: bottomNav}"></nav>
+<script>
+    const dataInput = document.getElementById('dataRetirada');
+    const horaSelect = document.getElementById('horaRetirada');
+    const checkoutForm = document.getElementById('checkout-form');
+
+    function atualizarHorarios() {
+        const dataSelecionada = dataInput.value;
+
+        horaSelect.innerHTML = '';
+        horaSelect.disabled = true;
+
+        if (!dataSelecionada) {
+            horaSelect.innerHTML =
+                '<option value="">Selecione primeiro uma data</option>';
+            return;
+        }
+
+        const [ano, mes, dia] = dataSelecionada.split('-').map(Number);
+        const data = new Date(ano, mes - 1, dia);
+        const diaSemana = data.getDay();
+
+        const fimDeSemana = diaSemana === 0 || diaSemana === 6;
+
+        const horaInicial = 8;
+        const horaFinal = fimDeSemana ? 13 : 18;
+
+        horaSelect.innerHTML =
+            '<option value="">Selecione um horário</option>';
+
+        for (let hora = horaInicial; hora <= horaFinal; hora++) {
+            const horario = String(hora).padStart(2, '0') + ':00';
+
+            const option = document.createElement('option');
+            option.value = horario;
+            option.textContent = horario;
+
+            horaSelect.appendChild(option);
+        }
+
+        horaSelect.disabled = false;
+    }
+
+    dataInput.addEventListener('change', atualizarHorarios);
+
+    checkoutForm.addEventListener('submit', function(event) {
+        if (!dataInput.value || !horaSelect.value) {
+            event.preventDefault();
+            alert('Selecione a data e o horário da retirada.');
+            return;
+        }
+
+        const [ano, mes, dia] = dataInput.value.split('-').map(Number);
+        const [hora, minuto] = horaSelect.value.split(':').map(Number);
+
+        const dataHoraRetirada = new Date(
+            ano, mes - 1, dia, hora, minuto
+        );
+
+        const agora = new Date();
+        const antecedenciaMinima = new Date(
+            agora.getTime() + 2 * 60 * 60 * 1000
+        );
+
+        if (dataHoraRetirada < antecedenciaMinima) {
+            event.preventDefault();
+            alert('A encomenda deve ser realizada com pelo menos 2 horas de antecedência.');
+            return;
+        }
+    });
+
+    // Impede a seleção de datas anteriores a hoje.
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+
+    dataInput.min = `${ano}-${mes}-${dia}`;
+</script>
+</body>
+</html>

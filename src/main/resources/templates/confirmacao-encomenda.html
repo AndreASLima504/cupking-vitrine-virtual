@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pedido confirmado | Cupking</title>
+
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/confirmacao-encomenda.css}">
+</head>
+
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="confirmation-page">
+
+    <section class="confirmation-success">
+
+        <div class="success-icon">
+            <span>✓</span>
+        </div>
+
+        <h1>Pedido confirmado!</h1>
+
+        <p>
+            Sua encomenda foi registrada com sucesso.
+            Agora é só aguardar o momento de buscar seus cupcakes.
+        </p>
+
+    </section>
+
+    <section class="order-number">
+
+        <span>Número da sua encomenda</span>
+
+        <strong th:text="'#' + ${encomenda.id}">
+            #123
+        </strong>
+
+        <p>
+            Guarde esse número para consultar sua encomenda.
+        </p>
+
+    </section>
+
+    <section class="confirmation-card">
+
+        <h2>Informações da retirada</h2>
+
+        <div class="confirmation-info">
+            <span>Data</span>
+            <strong th:text="${#temporals.format(
+                encomenda.previsaoRetirada, 'dd/MM/yyyy'
+            )}">
+                08/11/2026
+            </strong>
+        </div>
+
+        <div class="confirmation-info">
+            <span>Horário</span>
+            <strong th:text="${#temporals.format(
+                encomenda.previsaoRetirada, 'HH:mm'
+            )}">
+                15:00
+            </strong>
+        </div>
+
+        <div class="confirmation-info">
+            <span>Forma de pagamento</span>
+            <strong>Na retirada</strong>
+        </div>
+
+    </section>
+
+    <section class="confirmation-card">
+
+        <h2>Resumo da encomenda</h2>
+
+        <div class="confirmation-items">
+
+            <div class="confirmation-item"
+                 th:each="item : ${encomenda.itens}">
+
+                <div class="item-details">
+                    <strong th:text="${item.cupcake.nome}">
+                        Cupcake
+                    </strong>
+
+                    <span th:text="${item.quantidade + ' unidade(s)'}">
+                        2 unidades
+                    </span>
+                </div>
+
+                <strong th:text="${'R$ ' + #numbers.formatDecimal(
+                    item.subtotal, 1, 'POINT', 2, 'COMMA'
+                )}">
+                    R$ 20,00
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="confirmation-divider"></div>
+
+        <div class="confirmation-total">
+            <span>Total da encomenda</span>
+
+            <strong th:text="${'R$ ' + #numbers.formatDecimal(
+                encomenda.precoTotal, 1, 'POINT', 2, 'COMMA'
+            )}">
+                R$ 40,00
+            </strong>
+        </div>
+
+    </section>
+
+    <div class="confirmation-actions">
+
+        <a th:href="@{/}" class="back-home-button">
+            Voltar ao início
+            <span>→</span>
+        </a>
+
+    </div>
+
+</main>
+
+<nav th:replace="~{fragments/bottom-nav :: bottomNav}"></nav>
+
+</body>
+</html>

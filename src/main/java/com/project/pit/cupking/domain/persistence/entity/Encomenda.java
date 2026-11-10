@@ -1,6 +1,8 @@
 package com.project.pit.cupking.domain.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "encomenda")
 public class Encomenda {
 
@@ -32,8 +36,11 @@ public class Encomenda {
     )
     private BigDecimal precoTotal = BigDecimal.ZERO;
 
+    @Column(name = "retirada", nullable = false)
+    private Boolean retirada = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = true)
     private Usuario usuario;
 
     @OneToMany(
@@ -48,6 +55,29 @@ public class Encomenda {
         if (dataCadastro == null) {
             dataCadastro = LocalDateTime.now();
         }
+    }
+
+    public int getQuantidadeTotal() {
+        return itens.stream()
+                .mapToInt(EncomendaCupcake::getQuantidade)
+                .sum();
+    }
+
+    public void adicionarItem(EncomendaCupcake item) {
+        item.setEncomenda(this);
+        itens.add(item);
+    }
+
+    public void removerItem(EncomendaCupcake item) {
+        itens.remove(item);
+        item.setEncomenda(null);
+    }
+
+    public void atualizarTotal() {
+        this.precoTotal = itens.stream()
+                .map(item -> item.getCupcake().getPrecoUnitario()
+                        .multiply(BigDecimal.valueOf(item.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Encomenda() {}

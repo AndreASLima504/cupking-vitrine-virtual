@@ -1,9 +1,14 @@
 package com.project.pit.cupking.domain.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Setter
 @Table(
         name = "encomenda_cupcakes",
         uniqueConstraints = {
@@ -34,5 +39,10 @@ public class EncomendaCupcake {
     private Integer quantidade;
 
     public EncomendaCupcake() {}
+
+    public BigDecimal getSubtotal() {
+        return cupcake.getPrecoUnitario()
+                .multiply(BigDecimal.valueOf(quantidade));
+    }
 
 }

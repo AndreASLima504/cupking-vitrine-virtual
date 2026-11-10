@@ -84,6 +84,12 @@ button {
     justify-content: center;
 }
 
+.cart-icon img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+}
 
 /* BOTTOM NAVIGATION */
 
@@ -127,14 +133,9 @@ button {
     text-decoration: none;
 }
 
-.nav-icon {
-    font-size: 19px;
-    line-height: 1;
-}
-
 .nav-item img {
-    width: 21px;
-    height: 21px;
+    width: 30px;
+    height: 30px;
 }
 
 .nav-item.active {

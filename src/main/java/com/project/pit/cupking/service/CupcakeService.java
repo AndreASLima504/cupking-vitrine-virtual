@@ -6,6 +6,7 @@ import com.project.pit.cupking.domain.persistence.entity.Ingrediente;
 import com.project.pit.cupking.domain.persistence.repository.CupcakeRepository;
 import com.project.pit.cupking.web.dto.CupcakeCardDTO;
 import com.project.pit.cupking.web.dto.CupcakeDetalhesDTO;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,14 @@ public class CupcakeService {
         return cupcakes.stream()
                 .map(this::converterParaCard)
                 .toList();
+    }
+
+    @Transactional
+    public Cupcake buscarEntidadePorId(Long id) {
+        return cupcakeRepository.findByIdComFotos(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Cupcake não encontrado: " + id
+                ));
     }
 
     @Transactional

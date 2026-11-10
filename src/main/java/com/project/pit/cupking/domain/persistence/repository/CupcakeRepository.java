@@ -3,6 +3,7 @@ package com.project.pit.cupking.domain.persistence.repository;
 import com.project.pit.cupking.domain.persistence.entity.Cupcake;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,12 @@ public interface CupcakeRepository extends JpaRepository<Cupcake, Long> {
     List<Cupcake> buscarMelhorAvaliado(
             org.springframework.data.domain.Pageable pageable
     );
+
+    @Query("""
+    SELECT DISTINCT c
+    FROM Cupcake c
+    LEFT JOIN FETCH c.fotos
+    WHERE c.id = :id
+""")
+    Optional<Cupcake> findByIdComFotos(@Param("id") Long id);
 }
