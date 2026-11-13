@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meus pedidos | Cupking</title>
+
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/pedidos.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="pedidos-container">
+
+    <!-- Cabeçalho -->
+    <section class="pedidos-heading">
+        <div>
+            <span class="heading-label">MINHA CONTA</span>
+            <h1>Meus pedidos</h1>
+            <p>Acompanhe suas encomendas e confira seus pedidos anteriores.</p>
+        </div>
+    </section>
+
+    <!-- Lista de pedidos -->
+    <section class="pedidos-lista"
+             th:if="${!#lists.isEmpty(pedidos)}">
+
+        <article class="pedido-card"
+                 th:each="pedido : ${pedidos}">
+
+            <!-- Cabeçalho do pedido -->
+            <header class="pedido-header">
+
+                <div class="pedido-identificacao">
+
+                    <span class="pedido-numero"
+                          th:text="|Pedido #${pedido.id}|">
+                        Pedido #0982
+                    </span>
+
+                    <span class="pedido-data"
+                          th:text="${#temporals.format(pedido.dataCadastro, 'dd/MM/yyyy')}">
+                        06/11/2026
+                    </span>
+
+                </div>
+
+                <span class="pedido-status status-confirmado">
+                    Confirmado
+                </span>
+
+            </header>
+
+            <!-- Conteúdo do pedido -->
+            <div class="pedido-conteudo">
+
+                <!-- Produtos -->
+                <div class="pedido-produtos">
+
+                    <div class="pedido-item"
+                         th:each="item : ${pedido.itens}"
+                         th:if="${item != null and item.cupcake != null}">
+
+                        <!-- Imagem do cupcake -->
+                        <div class="produto-imagem">
+
+                            <img th:if="${item.cupcake.fotos != null and !item.cupcake.fotos.isEmpty()}"
+                                 th:src="@{${item.cupcake.fotos[0].caminho}}"
+                                 th:alt="${item.cupcake.nome}">
+
+                            <span th:unless="${item.cupcake.fotos != null and !item.cupcake.fotos.isEmpty()}">
+                                🧁
+                            </span>
+
+                        </div>
+
+                        <!-- Informações do produto -->
+                        <div class="produto-info">
+
+                            <strong th:text="${item.cupcake.nome}">
+                                Chocolate intenso
+                            </strong>
+
+                            <span th:text="|${item.quantidade} unidade(s)|">
+                                2 unidades
+                            </span>
+
+                            <!-- Avaliação -->
+                            <div class="avaliacao-container">
+
+                                <!-- Avaliação já realizada -->
+                                <div class="avaliacao-realizada"
+                                     th:if="${avaliacoesPorCupcake[item.cupcake.id] != null}">
+
+                                    <div class="avaliacao-realizada-header">
+
+                                        <strong>Sua avaliação</strong>
+
+                                        <span class="avaliacao-nota">
+                                            <span th:text="${#numbers.formatDecimal(
+                                                avaliacoesPorCupcake[item.cupcake.id].nota, 1, 1
+                                            )}">5.0</span>/5
+                                        </span>
+
+                                    </div>
+
+                                    <div class="avaliacao-estrelas">
+
+                                        <span th:each="estrela : ${#numbers.sequence(1, 5)}"
+                                              th:text="${estrela <= avaliacoesPorCupcake[item.cupcake.id].nota ? '★' : '☆'}">
+                                        </span>
+
+                                    </div>
+
+                                    <p th:if="${avaliacoesPorCupcake[item.cupcake.id].descricao != null}"
+                                       th:text="${avaliacoesPorCupcake[item.cupcake.id].descricao}">
+                                    </p>
+
+                                </div>
+
+                                <!-- Avaliação disponível -->
+                                <div th:if="${avaliacoesPorCupcake[item.cupcake.id] == null
+                                             and pedido.previsaoRetirada != null
+                                             and !pedido.previsaoRetirada.isAfter(agora)}">
+
+                                    <button type="button"
+                                            class="avaliar-cupcake"
+                                            aria-expanded="false">
+                                        ☆ Avaliar cupcake
+                                    </button>
+
+                                    <form class="avaliacao-form"
+                                          th:action="@{/avaliacoes/enviar}"
+                                          method="post"
+                                          hidden>
+
+                                        <input type="hidden"
+                                               name="cupcakeId"
+                                               th:value="${item.cupcake.id}">
+
+                                        <input type="hidden"
+                                               name="encomendaId"
+                                               th:value="${pedido.id}">
+
+                                        <input type="hidden"
+                                               name="nota"
+                                               class="nota-selecionada"
+                                               required>
+
+                                        <div class="avaliacao-form-conteudo">
+
+                                            <strong>
+                                                Como você avalia este cupcake?
+                                            </strong>
+
+                                            <div class="avaliacao-selecao-estrelas">
+
+                                                <button type="button"
+                                                        data-nota="1"
+                                                        aria-label="1 estrela">
+                                                    ★
+                                                </button>
+
+                                                <button type="button"
+                                                        data-nota="2"
+                                                        aria-label="2 estrelas">
+                                                    ★
+                                                </button>
+
+                                                <button type="button"
+                                                        data-nota="3"
+                                                        aria-label="3 estrelas">
+                                                    ★
+                                                </button>
+
+                                                <button type="button"
+                                                        data-nota="4"
+                                                        aria-label="4 estrelas">
+                                                    ★
+                                                </button>
+
+                                                <button type="button"
+                                                        data-nota="5"
+                                                        aria-label="5 estrelas">
+                                                    ★
+                                                </button>
+
+                                            </div>
+
+                                            <textarea name="descricao"
+                                                      placeholder="Conte o que achou (opcional)"
+                                                      rows="3"></textarea>
+
+                                            <div class="avaliacao-form-acoes">
+
+                                                <button type="button"
+                                                        class="cancelar-avaliacao">
+                                                    Cancelar
+                                                </button>
+
+                                                <button type="submit"
+                                                        class="enviar-avaliacao">
+                                                    Enviar avaliação
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+                                <!-- Avaliação ainda indisponível -->
+                                <div th:if="${avaliacoesPorCupcake[item.cupcake.id] == null
+                                             and (pedido.previsaoRetirada == null
+                                             or pedido.previsaoRetirada.isAfter(agora))}">
+
+                                    <span class="avaliacao-indisponivel">
+                                        Avaliação disponível após a retirada prevista
+                                    </span>
+
+                                </div>
+
+                            </div>
+                            <!-- Fim da avaliação -->
+
+                        </div>
+                        <!-- Fim das informações do produto -->
+
+                        <!-- Preço do produto -->
+                        <strong class="produto-preco"
+                                th:text="${#numbers.formatCurrency(item.subtotal)}">
+                            R$ 28,00
+                        </strong>
+
+                    </div>
+                    <!-- Fim do item -->
+
+                </div>
+                <!-- Fim dos produtos -->
+
+                <!-- Informações gerais do pedido -->
+                <div class="pedido-informacoes">
+
+                    <!-- Retirada -->
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Retirada / entrega
+                        </span>
+
+                        <th:block th:if="${pedido.previsaoRetirada != null}">
+
+                            <strong th:text="${#temporals.format(
+                                pedido.previsaoRetirada, 'dd/MM/yyyy'
+                            )}">
+                                12/11/2026
+                            </strong>
+
+                            <span th:text="${#temporals.format(
+                                pedido.previsaoRetirada, 'HH:mm'
+                            )}">
+                                15:00
+                            </span>
+
+                        </th:block>
+
+                        <span th:unless="${pedido.previsaoRetirada != null}">
+                            A definir
+                        </span>
+
+                    </div>
+
+                    <!-- Quantidade -->
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Quantidade
+                        </span>
+
+                        <strong th:text="|${pedido.quantidadeTotal} produtos|">
+                            3 produtos
+                        </strong>
+
+                    </div>
+
+                    <!-- Total -->
+                    <div class="info-item info-total">
+
+                        <span class="info-label">
+                            Total do pedido
+                        </span>
+
+                        <strong th:text="${#numbers.formatCurrency(pedido.precoTotal)}">
+                            R$ 48,00
+                        </strong>
+
+                    </div>
+
+                </div>
+                <!-- Fim das informações gerais -->
+
+            </div>
+            <!-- Fim do conteúdo -->
+
+            <!-- Rodapé -->
+            <footer class="pedido-footer">
+
+                <span class="pedido-mensagem">
+                    <span class="mensagem-icone">✓</span>
+                    Obrigado por escolher a Cupking!
+                </span>
+
+                <a th:href="@{/carrinho/confirmacao/{id}(id=${pedido.id})}"
+                   class="pedido-detalhes">
+
+                    Ver detalhes
+                    <span>→</span>
+
+                </a>
+
+            </footer>
+
+        </article>
+
+    </section>
+    <!-- Fim da lista de pedidos -->
+
+    <!-- Estado vazio -->
+    <section class="pedidos-vazio"
+             th:if="${#lists.isEmpty(pedidos)}">
+
+        <div class="vazio-icone">🧁</div>
+
+        <h2>Você ainda não tem pedidos</h2>
+
+        <p>
+            Que tal escolher alguns cupcakes e fazer sua primeira encomenda?
+        </p>
+
+        <a th:href="@{/}"
+           class="vazio-botao">
+            Conhecer cupcakes
+        </a>
+
+    </section>
+
+</main>
+
+<!-- Navegação inferior -->
+<nav th:replace="~{fragments/bottom-nav :: bottomNav}"></nav>
+
+<!-- JavaScript -->
+<script th:src="@{/js/pedidos.js}"></script>
+
+</body>
+</html>

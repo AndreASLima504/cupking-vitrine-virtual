@@ -1,11 +1,23 @@
 package com.project.pit.cupking.domain.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "avaliacao")
+@Getter
+@Setter
+@Table(
+        name = "avaliacao",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_avaliacao_usuario_cupcake",
+                        columnNames = {"id_usuario", "id_cupcake"}
+                )
+        }
+)
 public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
