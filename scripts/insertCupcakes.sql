@@ -122,6 +122,26 @@ INSERT INTO cupcake_image (
     is_thumbnail,
     ordem
 )
+SELECT id, '/images/cupcakes/banana-2.jfif', FALSE, 1
+FROM cupcake
+WHERE nome = 'Cupcake de Banana';
+
+INSERT INTO cupcake_image (
+    id_cupcake,
+    caminho,
+    is_thumbnail,
+    ordem
+)
+SELECT id, '/images/cupcakes/banana-3.jfif', FALSE, 2
+FROM cupcake
+WHERE nome = 'Cupcake de Banana';
+
+INSERT INTO cupcake_image (
+    id_cupcake,
+    caminho,
+    is_thumbnail,
+    ordem
+)
 SELECT id, '/images/cupcakes/morango-chocolate.jpg', TRUE, 0
 FROM cupcake
 WHERE nome = 'Cupcake de Morango com Chocolate';
@@ -132,7 +152,27 @@ INSERT INTO cupcake_image (
     is_thumbnail,
     ordem
 )
+SELECT id, '/images/cupcakes/morango-chocolate-2.jfif', FALSE, 1
+FROM cupcake
+WHERE nome = 'Cupcake de Morango com Chocolate';
+
+INSERT INTO cupcake_image (
+    id_cupcake,
+    caminho,
+    is_thumbnail,
+    ordem
+)
 SELECT id, '/images/cupcakes/chocolate.webp', TRUE, 0
+FROM cupcake
+WHERE nome = 'Cupcake de Chocolate';
+
+INSERT INTO cupcake_image (
+    id_cupcake,
+    caminho,
+    is_thumbnail,
+    ordem
+)
+SELECT id, '/images/cupcakes/chocolate-2.png', FALSE, 1
 FROM cupcake
 WHERE nome = 'Cupcake de Chocolate';
 

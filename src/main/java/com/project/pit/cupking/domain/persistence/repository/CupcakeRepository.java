@@ -1,6 +1,7 @@
 package com.project.pit.cupking.domain.persistence.repository;
 
 import com.project.pit.cupking.domain.persistence.entity.Cupcake;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +35,12 @@ public interface CupcakeRepository extends JpaRepository<Cupcake, Long> {
     WHERE c.id = :id
 """)
     Optional<Cupcake> findByIdComFotos(@Param("id") Long id);
+
+    @EntityGraph(attributePaths = "fotos")
+    @Query("""
+    SELECT DISTINCT c
+    FROM Cupcake c
+    WHERE c.id IN :ids
+""")
+    List<Cupcake> buscarComFotosPorIds(@Param("ids") List<Long> ids);
 }

@@ -8,6 +8,7 @@ import com.project.pit.cupking.service.EncomendaService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -125,6 +126,7 @@ public class EncomendaController {
             @DateTimeFormat(pattern = "HH:mm")
             LocalTime horaRetirada,
 
+            Authentication authentication,
             HttpSession session
     ) {
         Encomenda encomenda = obterEncomenda(session);
@@ -143,12 +145,32 @@ public class EncomendaController {
         encomenda.setPrevisaoRetirada(previsaoRetirada);
         encomenda.setRetirada(true);
 
-        Encomenda encomendaSalva = encomendaService.finalizar(encomenda);
+        Encomenda encomendaSalva = encomendaService.finalizar(
+                encomenda,
+                authentication.getName()
+        );
 
         session.removeAttribute("encomenda");
 
         return "redirect:/carrinho/confirmacao/" + encomendaSalva.getId();
     }
+
+    @GetMapping("/confirmacao/{id}")
+    public String visualizarConfirmacao(
+            @PathVariable Long id,
+            Authentication authentication,
+            Model model
+    ) {
+        Encomenda encomenda = encomendaService.buscarPorIdEEmailUsuario(
+                id,
+                authentication.getName()
+        );
+
+        model.addAttribute("encomenda", encomenda);
+
+        return "confirmacao-encomenda";
+    }
+
 
     private boolean horarioValido(LocalDateTime dataHora) {
         if (dataHora.isBefore(LocalDateTime.now())) {
@@ -166,17 +188,6 @@ public class EncomendaController {
         return !hora.isBefore(inicio) && !hora.isAfter(fim);
     }
 
-    @GetMapping("/confirmacao/{id}")
-    public String visualizarConfirmacao(
-            @PathVariable Long id,
-            Model model
-    ) {
-        Encomenda encomenda = encomendaService.buscarPorId(id);
-
-        model.addAttribute("encomenda", encomenda);
-
-        return "confirmacao-encomenda";
-    }
 
     private Encomenda obterEncomenda(HttpSession session) {
         Encomenda encomenda =
@@ -190,4 +201,6 @@ public class EncomendaController {
 
         return encomenda;
     }
+
+
 }
