@@ -70,8 +70,7 @@
         <div class="pickup-option selected">
 
             <div class="pickup-icon">
-                <img th:src="@{/images/icons/home.svg}"
-                     alt="">
+                <img th:src="@{/images/icons/home.svg}" alt="">
             </div>
 
             <div class="pickup-info">
@@ -97,14 +96,16 @@
 
     </section>
 
-    <!-- Data de retirada -->
-    <!-- Data de retirada -->
+    <!-- Data e horário de retirada -->
     <section class="checkout-section">
 
         <div class="section-heading">
             <div>
                 <h2>Quando você quer retirar?</h2>
-                <p>Escolha o dia e o horário em que pretende buscar sua encomenda.</p>
+                <p>
+                    Escolha o dia e o horário em que pretende
+                    buscar sua encomenda.
+                </p>
             </div>
         </div>
 
@@ -119,6 +120,7 @@
                         name="dataRetirada"
                         form="checkout-form"
                         th:attr="min=${dataMinima}"
+                        aria-describedby="retirada-error"
                         required
                 >
             </div>
@@ -130,12 +132,22 @@
                         id="horaRetirada"
                         name="horaRetirada"
                         form="checkout-form"
+                        aria-describedby="retirada-error"
                         required
                         disabled
                 >
                     <option value="">Selecione primeiro uma data</option>
                 </select>
             </div>
+
+            <!-- Mensagem de validação -->
+            <p
+                    id="retirada-error"
+                    class="date-error"
+                    role="alert"
+                    aria-live="polite"
+                    hidden
+            ></p>
 
             <p class="date-notice">
                 Segunda a sexta: 08h às 18h<br>
@@ -159,13 +171,11 @@
         <div class="payment-info">
 
             <div class="payment-icon">
-                <img th:src="@{/images/icons/dollar-sign.svg}"
-                     alt="">
+                <img th:src="@{/images/icons/dollar-sign.svg}" alt="">
             </div>
 
             <div>
                 <strong>Pagamento na retirada</strong>
-
                 <p>Cartão, Pix ou dinheiro.</p>
             </div>
 
@@ -173,33 +183,36 @@
 
     </section>
 
-
-    <!-- Resumo -->
+    <!-- Resumo da encomenda -->
     <aside class="checkout-summary">
 
         <h2>Resumo da encomenda</h2>
 
         <div class="summary-items">
 
-            <div class="summary-item"
-                 th:each="item : ${encomenda.itens}">
+            <div
+                    class="summary-item"
+                    th:each="item : ${encomenda.itens}"
+            >
 
                 <div class="summary-item-info">
+
                     <strong th:text="${item.cupcake.nome}">
                         Nome do cupcake
                     </strong>
 
                     <span th:text="${item.quantidade + ' unidade(s)'}">
-                    1 unidade
-                </span>
+                        1 unidade
+                    </span>
+
                 </div>
 
                 <strong class="summary-item-price">
                     R$
                     <span th:text="${#numbers.formatDecimal(
-                    item.subtotal,
-                    1, 'POINT', 2, 'COMMA'
-                )}">0,00</span>
+                        item.subtotal,
+                        1, 'POINT', 2, 'COMMA'
+                    )}">0,00</span>
                 </strong>
 
             </div>
@@ -226,18 +239,23 @@
             <strong>
                 R$
                 <span th:text="${#numbers.formatDecimal(
-                encomenda.precoTotal,
-                1, 'POINT', 2, 'COMMA'
-            )}">0,00</span>
+                    encomenda.precoTotal,
+                    1, 'POINT', 2, 'COMMA'
+                )}">0,00</span>
             </strong>
         </div>
 
-        <form id="checkout-form"
-              th:action="@{/carrinho/finalizar}"
-              method="post">
+        <form
+                id="checkout-form"
+                th:action="@{/carrinho/finalizar}"
+                method="post"
+        >
+
             <button type="submit" class="confirm-button">
-                Confirmar encomenda <span>→</span>
+                Confirmar encomenda
+                <span>→</span>
             </button>
+
         </form>
 
         <p class="summary-notice">
@@ -247,15 +265,29 @@
 
     </aside>
 
-
 </main>
 
 <nav th:replace="~{fragments/bottom-nav :: bottomNav}"></nav>
+
 <script>
     const dataInput = document.getElementById('dataRetirada');
     const horaSelect = document.getElementById('horaRetirada');
     const checkoutForm = document.getElementById('checkout-form');
+    const erroRetirada = document.getElementById('retirada-error');
 
+    // Exibe uma mensagem de validação.
+    function exibirErroRetirada(mensagem) {
+        erroRetirada.textContent = mensagem;
+        erroRetirada.hidden = false;
+    }
+
+    // Limpa a mensagem de validação.
+    function limparErroRetirada() {
+        erroRetirada.textContent = '';
+        erroRetirada.hidden = true;
+    }
+
+    // Gera os horários disponíveis de acordo com o dia escolhido.
     function atualizarHorarios() {
         const dataSelecionada = dataInput.value;
 
@@ -293,12 +325,27 @@
         horaSelect.disabled = false;
     }
 
-    dataInput.addEventListener('change', atualizarHorarios);
+    // Atualiza os horários e limpa erros quando a data muda.
+    dataInput.addEventListener('change', () => {
+        atualizarHorarios();
+        limparErroRetirada();
+    });
 
+    // Limpa erros quando o horário muda.
+    horaSelect.addEventListener('change', limparErroRetirada);
+
+    // Validação antes do envio.
     checkoutForm.addEventListener('submit', function(event) {
+
+        limparErroRetirada();
+
         if (!dataInput.value || !horaSelect.value) {
             event.preventDefault();
-            alert('Selecione a data e o horário da retirada.');
+
+            exibirErroRetirada(
+                'Selecione a data e o horário da retirada.'
+            );
+
             return;
         }
 
@@ -310,24 +357,33 @@
         );
 
         const agora = new Date();
+
         const antecedenciaMinima = new Date(
             agora.getTime() + 2 * 60 * 60 * 1000
         );
 
         if (dataHoraRetirada < antecedenciaMinima) {
             event.preventDefault();
-            alert('A encomenda deve ser realizada com pelo menos 2 horas de antecedência.');
+
+            exibirErroRetirada(
+                'Escolha um horário com pelo menos 2 horas de antecedência.'
+            );
+
             return;
         }
     });
 
     // Impede a seleção de datas anteriores a hoje.
     const hoje = new Date();
+
     const ano = hoje.getFullYear();
     const mes = String(hoje.getMonth() + 1).padStart(2, '0');
     const dia = String(hoje.getDate()).padStart(2, '0');
 
-    dataInput.min = `${ano}-${mes}-${dia}`;
+    const dataAtual = `${ano}-${mes}-${dia}`;
+
+    dataInput.min = dataAtual;
 </script>
+
 </body>
 </html>

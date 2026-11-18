@@ -1,4 +1,8 @@
 
+/* ========================================
+   PÁGINA
+======================================== */
+
 .checkout-page {
     width: 100%;
     max-width: 720px;
@@ -6,7 +10,9 @@
     padding: 20px 20px 40px;
 }
 
-/* Etapas */
+/* ========================================
+   ETAPAS
+======================================== */
 
 .checkout-steps {
     display: flex;
@@ -70,7 +76,9 @@
     background: #8bc5a0;
 }
 
-/* Cabeçalho */
+/* ========================================
+   CABEÇALHO
+======================================== */
 
 .checkout-heading {
     margin-bottom: 25px;
@@ -104,7 +112,9 @@
     line-height: 1.5;
 }
 
-/* Seções */
+/* ========================================
+   SEÇÕES
+======================================== */
 
 .checkout-section {
     margin-bottom: 16px;
@@ -131,7 +141,9 @@
     line-height: 1.5;
 }
 
-/* Retirada */
+/* ========================================
+   RETIRADA
+======================================== */
 
 .pickup-option {
     display: flex;
@@ -197,7 +209,9 @@
     font-weight: 700;
 }
 
-/* Aviso */
+/* ========================================
+   AVISO DE RETIRADA
+======================================== */
 
 .pickup-notice {
     display: flex;
@@ -221,7 +235,83 @@
     line-height: 1.5;
 }
 
-/* Pagamento */
+/* ========================================
+   DATA E HORÁRIO
+======================================== */
+
+.date-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.date-selection label {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.date-selection input,
+.date-selection select {
+    width: 100%;
+    max-width: 300px;
+    height: 43px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.date-selection input:focus,
+.date-selection select:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 2px rgba(40, 84, 245, 0.08);
+}
+
+.date-selection select:disabled {
+    background: #f3f3f3;
+    color: var(--muted);
+    cursor: not-allowed;
+}
+
+/* Mensagem de validação */
+
+.date-error {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid #ffd5cc;
+    border-radius: 8px;
+    background: #fff0ed;
+    color: #c0392b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.date-error[hidden] {
+    display: none;
+}
+
+.date-notice {
+    margin: 2px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+/* ========================================
+   PAGAMENTO
+======================================== */
 
 .payment-section {
     margin-bottom: 20px;
@@ -240,7 +330,9 @@
     background: var(--background);
 }
 
-/* Resumo */
+/* ========================================
+   RESUMO DA ENCOMENDA
+======================================== */
 
 .checkout-summary {
     padding: 19px;
@@ -253,6 +345,47 @@
     margin: 0 0 18px;
     font-size: 16px;
 }
+
+/* Itens */
+
+.summary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.summary-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.summary-item-info strong {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.summary-item-info span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.summary-item-price {
+    color: var(--text);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Totais */
 
 .summary-row,
 .summary-total {
@@ -292,7 +425,9 @@
     white-space: nowrap;
 }
 
-/* Botão */
+/* ========================================
+   BOTÃO DE CONFIRMAÇÃO
+======================================== */
 
 .confirm-button {
     display: flex;
@@ -327,103 +462,12 @@
     text-align: center;
 }
 
-
-/* Seleção da data e horário */
-
-.date-selection {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.date-field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.date-selection label {
-    color: var(--text);
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.date-selection input,
-.date-selection select {
-    width: 100%;
-    max-width: 300px;
-    height: 43px;
-    padding: 0 12px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: white;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 13px;
-}
-
-.date-selection input:focus,
-.date-selection select:focus {
-    outline: none;
-    border-color: var(--blue);
-}
-
-.date-selection select:disabled {
-    background: #f3f3f3;
-    color: var(--muted);
-    cursor: not-allowed;
-}
-
-.date-notice {
-    margin: 2px 0 0;
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.5;
-}
-
-/* Itens do resumo */
-
-.summary-items {
-    display: flex;
-    flex-direction: column;
-    gap: 13px;
-}
-
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-.summary-item-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 0;
-}
-
-.summary-item-info strong {
-    color: var(--text);
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.summary-item-info span {
-    color: var(--muted);
-    font-size: 10px;
-}
-
-.summary-item-price {
-    color: var(--text);
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-
-/* Responsividade */
+/* ========================================
+   RESPONSIVIDADE
+======================================== */
 
 @media (max-width: 390px) {
+
     .checkout-page {
         padding-left: 14px;
         padding-right: 14px;
@@ -443,4 +487,5 @@
     .checkout-summary {
         padding: 14px;
     }
+
 }

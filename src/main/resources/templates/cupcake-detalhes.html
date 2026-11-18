@@ -148,8 +148,7 @@
         </form>
 
         <span class="order-notice">
-            Encomendas com 24h de antecedência. Escolha entrega
-            ou retirada na finalização.
+            Encomendas com 2h de antecedência.
         </span>
 
     </section>
@@ -185,7 +184,10 @@
     }
 
     function changeQuantity(amount) {
-        quantity = Math.max(1, quantity + amount);
+        quantity = Math.min(
+            99,
+            Math.max(1, quantity + amount)
+        );
         updatePurchase();
     }
 

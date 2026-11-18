@@ -51,6 +51,7 @@ public class EncomendaController {
         item.setCupcake(cupcake);
         item.setQuantidade(quantidade);
 
+
         encomenda.adicionarItem(item);
         encomenda.atualizarTotal();
 

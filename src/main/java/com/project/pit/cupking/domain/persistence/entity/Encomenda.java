@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -63,9 +64,28 @@ public class Encomenda {
                 .sum();
     }
 
-    public void adicionarItem(EncomendaCupcake item) {
-        item.setEncomenda(this);
-        itens.add(item);
+    public void adicionarItem(EncomendaCupcake novoItem) {
+
+        Optional<EncomendaCupcake> itemExistente = itens.stream()
+                .filter(item -> item.getCupcake().getId()
+                        .equals(novoItem.getCupcake().getId()))
+                .findFirst();
+
+        if (itemExistente.isPresent()) {
+            EncomendaCupcake item = itemExistente.get();
+
+            item.setQuantidade(
+                    Math.min(
+                            item.getQuantidade() + novoItem.getQuantidade(),
+                            99
+                    )
+            );
+
+        } else {
+            novoItem.setQuantidade(Math.min(novoItem.getQuantidade(), 99));
+            novoItem.setEncomenda(this);
+            itens.add(novoItem);
+        }
     }
 
     public void removerItem(EncomendaCupcake item) {

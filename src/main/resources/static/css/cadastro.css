@@ -1,5 +1,7 @@
 
-/* Página */
+/* ========================================
+   ESTRUTURA DA PÁGINA
+======================================== */
 
 .login-page {
     min-height: 100vh;
@@ -11,7 +13,9 @@
     background: #1f1f1f;
 }
 
-/* Cartão */
+/* ========================================
+   CARTÃO DE CADASTRO
+======================================== */
 
 .login-card {
     width: 100%;
@@ -24,7 +28,9 @@
     flex-direction: column;
 }
 
-/* Logo */
+/* ========================================
+   LOGO
+======================================== */
 
 .brand {
     display: flex;
@@ -36,53 +42,20 @@
     margin-bottom: 12px;
 }
 
-.brand-crown {
-    width: 26px;
-    height: 26px;
-    margin-right: 1px;
-}
-
 .brand > span {
     font-size: 32px;
     font-weight: 800;
     letter-spacing: -1.8px;
 }
 
-.brand sup {
-    font-size: 8px;
-    margin-left: 1px;
-    margin-top: -15px;
+.brand > span:first-child {
+    font-size: 29px;
+    letter-spacing: 0;
 }
 
-/* Slogan */
-
-.brand-slogan {
-    height: 44px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 13px;
-    background: #fff0e5;
-    border-radius: 13px;
-    color: #d83d0a;
-    margin-bottom: 21px;
-}
-
-.brand-slogan svg {
-    width: 17px;
-    height: 17px;
-    flex-shrink: 0;
-}
-
-.brand-slogan span {
-    font-size: 10px;
-    font-weight: 600;
-}
-
-
-
-/* Apresentação */
+/* ========================================
+   APRESENTAÇÃO
+======================================== */
 
 .login-heading {
     margin-bottom: 23px;
@@ -103,7 +76,9 @@
     line-height: 1.6;
 }
 
-/* Formulário */
+/* ========================================
+   FORMULÁRIO
+======================================== */
 
 .login-form {
     display: flex;
@@ -123,15 +98,10 @@
     font-weight: 650;
 }
 
-.input-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.input-wrapper input {
+.form-field input {
     width: 100%;
     height: 41px;
-    padding: 0 43px 0 11px;
+    padding: 0 11px;
     border: 1px solid #e9e3db;
     border-radius: 8px;
     background: #fff;
@@ -142,91 +112,32 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.input-wrapper input::placeholder {
+.form-field input::placeholder {
     color: #858179;
 }
 
-.input-wrapper input:focus {
+.form-field input:focus {
     border-color: #2854f5;
     box-shadow: 0 0 0 2px rgba(40, 84, 245, 0.08);
 }
 
-.input-wrapper > svg,
-.input-icon-button {
-    position: absolute;
-    right: 11px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 17px;
-    height: 17px;
-    color: #77766f;
-}
+/* ========================================
+   MENSAGENS DE ERRO
+======================================== */
 
-.input-icon-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.login-error {
+    display: block;
     padding: 0;
     border: none;
     background: transparent;
-    cursor: pointer;
-}
-
-.input-icon-button svg {
-    width: 17px;
-    height: 17px;
-}
-
-/* Opções */
-
-.login-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    margin-top: -2px;
-    font-size: 10px;
-}
-
-.remember-option {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #292824;
-    cursor: pointer;
-}
-
-.remember-option input {
-    width: 12px;
-    height: 12px;
-    margin: 0;
-    accent-color: #2854f5;
-}
-
-.login-options a,
-.register-link a {
-    color: #2854f5;
-    font-weight: 650;
-    text-decoration: none;
-}
-
-.login-options a:hover,
-.register-link a:hover {
-    text-decoration: underline;
-}
-
-/* Erro */
-
-.login-error {
-    padding: 10px;
-    background: #fff0ed;
-    border: 1px solid #ffd5cc;
-    border-radius: 8px;
     color: #c0392b;
     font-size: 11px;
+    line-height: 1.4;
 }
 
-/* Botão */
+/* ========================================
+   BOTÃO DE CADASTRO
+======================================== */
 
 .login-button {
     width: 100%;
@@ -260,7 +171,9 @@
     line-height: 1;
 }
 
-/* Cadastro */
+/* ========================================
+   LINK PARA LOGIN
+======================================== */
 
 .register-link {
     display: flex;
@@ -273,34 +186,19 @@
     font-size: 10px;
 }
 
-/* Segurança */
-
-.security-notice {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    margin-top: auto;
-    padding-top: 42px;
-    color: #89857e;
-    font-size: 9px;
+.register-link a {
+    color: #2854f5;
+    font-weight: 650;
+    text-decoration: none;
 }
 
-.security-notice svg {
-    width: 12px;
-    height: 12px;
-    flex-shrink: 0;
+.register-link a:hover {
+    text-decoration: underline;
 }
 
-.form-field .login-error {
-    display: block;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: #c0392b;
-    font-size: 11px;
-}
-/* Responsividade */
+/* ========================================
+   RESPONSIVIDADE
+======================================== */
 
 @media (max-width: 480px) {
     .login-page {
@@ -326,5 +224,3 @@
         min-height: 715px;
     }
 }
-
-
